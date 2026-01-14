@@ -1,17 +1,42 @@
 services:
   backend:
-    build: ./backend
-    container_name: PythonBackend1
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    # container_name: Removed for better scalability
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/backend
       # backend is the backend folder and :backend is the `WORKDIR /backend` dir
+    environment:
+      - ENV=development
+      - DATABASE_URL=${DATABASE_URL} # Pass secrets via .env file
     networks:
       - Rag_system_network
-    # links:
-    #   - frontend
+    # Links removed: services on the same network find each other by name automatically
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
+  frontend:
+    build: ./frontend/rag-system
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/rag-system:/app # need this for live reloading
+      - /app/node_modules # need this to prevent mixing up between windows and linux
+    environment:
+      - HOSTNAME=0.0.0.0
+      - NEXT_PUBLIC_API_URL=http://localhost:8000 # Client-side URL
+      - BACKEND_INTERNAL_URL=http://backend:8000  # Server-side (Docker) URL
+    depends_on:
+      backend:
+        condition: service_healthy # Only starts frontend after backend passes healthcheck
+    networks:
+      - Rag_system_network
 
 networks:
   Rag_system_network:
@@ -19,3 +44,12 @@ networks:
 
 
 #docker compose build .
+
+
+
+
+
+
+# Server-Side (Inside Docker): If you fetch data inside a Next.js Server Component, you should use the service name: fetch('http://backend:8000/api/data')
+
+# Client-Side (In the Browser): If you fetch data inside a use effect or a click handler, the browser doesn't know what "backend" is. You must use: fetch('http://localhost:8000/api/data')
