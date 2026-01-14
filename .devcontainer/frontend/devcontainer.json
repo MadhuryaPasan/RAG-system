@@ -2,5 +2,15 @@
     "name": "Frontend Dev",
     "dockerComposeFile": "../../docker-compose.yml",
     "service": "frontend",
-    "workspaceFolder": "/frontend"
+    "workspaceFolder": "/frontend",
+    "customizations": {
+    "vscode": {
+      "extensions": [
+        "streetsidesoftware.code-spell-checker",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-typescript-next",
+        "dsznajder.es7-react-js-snippets"
+      ]
+    }
+  }
 }

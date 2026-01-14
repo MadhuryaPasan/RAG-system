@@ -1,6 +1,17 @@
 {
-    "name": "Backend Dev",
-    "dockerComposeFile": "../../docker-compose.yml",
-    "service": "backend",
-    "workspaceFolder": "/backend"
+  "name": "Backend Dev",
+  "dockerComposeFile": "../../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/backend",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "streetsidesoftware.code-spell-checker",
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "meta.pyrefly",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  }
 }
