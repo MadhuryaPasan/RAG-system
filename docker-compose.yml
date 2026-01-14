@@ -26,10 +26,11 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend/rag-system:/app # need this for live reloading
-      - /app/node_modules # need this to prevent mixing up between windows and linux
+      - ./frontend/rag-system:/frontend # need this for live reloading
+      - /frontend/node_modules # need this to prevent mixing up between windows and linux
     environment:
       - HOSTNAME=0.0.0.0
+      - WATCHPACK_POLLING=true #manually check for file changes every few milliseconds instead of waiting for a signal
       - NEXT_PUBLIC_API_URL=http://localhost:8000 # Client-side URL
       - BACKEND_INTERNAL_URL=http://backend:8000  # Server-side (Docker) URL
     depends_on:
