@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ./backend
+    container_name: PythonBackend1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/backend
+      # backend is the backend folder and :backend is the `WORKDIR /backend` dir
+    networks:
+      - Rag_system_network
+    # links:
+    #   - frontend
+
+
+networks:
+  Rag_system_network:
+    driver: bridge
+
+
+#docker compose build .
